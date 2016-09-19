@@ -1,13 +1,26 @@
-import React from 'react';
+import React, { PropTypes }  from 'react';
 
-class ColorPicker extends React.Component {
-    render() {
+const ColorPicker = React.createClass({
+
+    propTypes: {
+        name: PropTypes.string.isRequired,
+        onColor: PropTypes.func.isRequired
+    },
+
+    onColorChange: function(event) {
+        this.props.onColor(this.props.name, event.target.value);
+    },
+
+    render: function() {
         return (
             <div>
-                <input type="color"/>
+                <label>{this.props.name}</label>
+                <input
+                    type="color"
+                    onChange={this.onColorChange}/>
             </div>
         )
     }
-}
+});
 
 export default ColorPicker;
