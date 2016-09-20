@@ -1,5 +1,6 @@
 import React from 'react';
 import ColorPicker from './ColorPicker.jsx';
+import ColorGradient from './ColorGradient.jsx';
 
 const App = React.createClass({
 
@@ -42,6 +43,10 @@ const App = React.createClass({
                 onColor={onColor}
             />;
         });
+        var gradient = {
+            start: this.state.colors[0].color,
+            end: this.state.colors[1].color
+        };
         return (
             <article>
                 <section>
@@ -50,6 +55,9 @@ const App = React.createClass({
                 </section>
                 <section>
                     { selectors }
+                </section>
+                <section>
+                    <ColorGradient start={gradient.start} end={gradient.end}></ColorGradient>
                 </section>
             </article>
         );
