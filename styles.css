@@ -1,0 +1,21 @@
+section {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: row;
+}
+.tints-and-shades {
+    display: flex;
+    flex: 1 1 auto;
+}
+.color-variations {
+    display: flex;
+    flex: 1 1 auto;
+}
+.color-gradient {
+    display: flex;
+    flex: 1 1 50%;
+    height: 16em;
+}
+.color-picker {
+    flex: 1 1 50%;
+}

@@ -4,6 +4,7 @@ const ColorPicker = React.createClass({
 
     propTypes: {
         name: PropTypes.string.isRequired,
+        color: PropTypes.string,
         onColor: PropTypes.func.isRequired
     },
 
@@ -13,10 +14,11 @@ const ColorPicker = React.createClass({
 
     render: function() {
         return (
-            <div>
+            <div className="color-picker">
                 <label>{this.props.name}</label>
                 <input
                     type="color"
+                    value={this.props.color}
                     onChange={this.onColorChange}/>
             </div>
         )
