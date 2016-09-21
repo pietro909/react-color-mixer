@@ -1,3 +1,5 @@
+div {
+}
 section {
     display: flex;
     flex: 1 1 auto;
@@ -7,6 +9,9 @@ section {
     display: flex;
     flex: 1 1 auto;
 }
+.color-gradient, .color-variations {
+    margin: 0.8rem;
+}
 .color-variations {
     display: flex;
     flex: 1 1 auto;
@@ -14,8 +19,13 @@ section {
 .color-gradient {
     display: flex;
     flex: 1 1 50%;
+    flex-direction: column;
+}
+/*
+.color-gradient div {
     height: 16em;
 }
+*/
 .color-picker {
     flex: 1 1 50%;
 }

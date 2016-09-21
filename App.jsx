@@ -54,8 +54,8 @@ const App = React.createClass({
         });
         var tintsAndShades = this.state.colors.map(function(element) {
             return <div key={element.name} className="color-variations">
-                <ColorGradient start={element.color} end="#ffffff" direction="top" />
-                <ColorGradient start={element.color} end="#000000" direction="top" />
+                <ColorGradient start={element.color} end="#ffffff" direction="top" title="Tints"/>
+                <ColorGradient start={element.color} end="#000000" direction="top" title="Shades"/>
             </div>;
         });
         var gradient = {
