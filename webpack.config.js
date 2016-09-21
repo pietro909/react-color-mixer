@@ -9,18 +9,18 @@ var config = {
 
     devServer: {
         inline: true,
-        port: 8060
+        port: 8080
     },
 
     module: {
         loaders: [
         {
-            test: /\.jsx?$/,
+            test: [ /\.jsx$/, /\.js$/ ],
             exclude: /node_modules/,
             loader: 'babel',
 
             query: {
-                presets: ['react']
+                presets: ['react', 'es2015']
             }
         }
         ]
