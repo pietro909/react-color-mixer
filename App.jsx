@@ -21,7 +21,10 @@ const App = React.createClass({
                     color: colorB.hexString(),
                     complementary: colorB.rotate(180).hexString()
                 }
-            ]
+            ],
+            currentSelection: {
+                color: null
+            }
         }
     },
 
@@ -38,8 +41,20 @@ const App = React.createClass({
         });
     },
 
+    onGradientSelected: function(pixelData) {
+        console.log(pixelData);
+        this.setState(function(previousState, currentProps) {
+            previousState.currentSelection.color =  Color({
+                r: pixelData.data[0],
+                g: pixelData.data[1],
+                b: pixelData.data[2],
+                a: pixelData.data[3]
+            })
+        });
+    },
+
     render: function() {
-        var onColor = this.onColor;
+        var component = this;
         var debug = this.state.colors.map(function(element) {
             var s = { color: element.complementary };
             return <p style={s} key={element.name}>{element.name}: {element.color}</p>
@@ -49,7 +64,7 @@ const App = React.createClass({
                 key={element.name}
                 name={element.name}
                 color={element.color}
-                onColor={onColor}
+                onColor={component.onColor}
             />;
         });
         var tintsAndShades = this.state.colors.map(function(element) {
@@ -62,17 +77,31 @@ const App = React.createClass({
             start: this.state.colors[0].color,
             end: this.state.colors[1].color
         };
+        var currentSelection;
+        if (this.state.currentSelection.color !== null) {
+            currentSelection = <span style={{width: '30px', height: '30px', backgroundColor: this.state.currentSelection.color.hexString()}}/>
+        } else {
+            currentSelection = '';
+        }
         return (
             <article>
-                <section>
+                <header>
                     <h1>Color mixer</h1>
+                </header>
+                <section>
                     {debug}
+                    {currentSelection}
                 </section>
                 <section>
                     {selectors}
                 </section>
                 <section>
-                    <ColorGradient start={gradient.start} end={gradient.end} direction="right"/>
+                    <ColorGradient
+                        start={gradient.start}
+                        end={gradient.end}
+                        direction="right"
+                        onPixelSelected={component.onGradientSelected}
+                    />
                 </section>
                 <section className="tints-and-shades">
                     {tintsAndShades}
