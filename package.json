@@ -3,24 +3,31 @@
   "version": "0.0.1",
   "description": "my first react app",
   "main": "index.js",
+  "bugs": {
+    "url": "git@github.com:pietro909/react-color-mixer.git",
+    "email": "pietro.grandi.3d@gmail.com"
+  },
   "scripts": {
     "start": "webpack-dev-server --hot",
-    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Pietro Grandi",
+  "license": "MIT",
+  "repository" : {
+    "type" : "git",
+    "url": "git@github.com:pietro909/react-color-mixer.git"
+  },
   "dependencies": {
     "color": "^0.11.3",
     "react": "^15.3.1",
-    "react-dom": "^15.3.1",
-    "webpack-dev-server": "^1.16.1"
+    "react-dom": "^15.3.1"
   },
   "devDependencies": {
     "babel-core": "^6.14.0",
     "babel-loader": "^6.2.5",
     "babel-preset-es2015": "^6.14.0",
     "babel-preset-react": "^6.11.1",
+    "webpack-dev-server": "^1.16.1",
     "webpack": "^1.13.2"
   }
 }
