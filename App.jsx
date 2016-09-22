@@ -42,7 +42,6 @@ const App = React.createClass({
     },
 
     onGradientSelected: function(event, pixelData) {
-        console.log(pixelData);
         this.setState(function(previousState, currentProps) {
             previousState.currentSelection.color =  Color({
                 r: pixelData.data[0],
@@ -51,9 +50,13 @@ const App = React.createClass({
                 a: pixelData.data[3]
             })
         });
-        // manage ufo
-        this.refs.ufo.left = event.nativeEvent.pageX;
-        this.refs.ufo.top = event.nativeEvent.pageY;
+        this.refs.ufo.style.left = `${event.nativeEvent.pageX}px`;
+        this.refs.ufo.style.top = `${event.nativeEvent.pageY}px`;
+        this.refs.ufo.style.display = 'flex';
+    },
+
+    onGradientUnselected: function(event) {
+        this.refs.ufo.style.display = 'none';
     },
 
     render: function() {
@@ -103,6 +106,7 @@ const App = React.createClass({
                         end={gradient.end}
                         direction="right"
                         onPixelSelected={component.onGradientSelected}
+                        onMouseUp={component.onGradientUnselected}
                     />
                 </section>
                 <section className="tints-and-shades">

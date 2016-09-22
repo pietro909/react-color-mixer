@@ -9,7 +9,8 @@ const ColorGradient = React.createClass({
         end: PropTypes.string.isRequired,
         direction: PropTypes.string,
         title: PropTypes.string,
-        onPixelSelected: PropTypes.func
+        onPixelSelected: PropTypes.func,
+        onMouseUp: PropTypes.func
     },
 
     drawGradient: function() {
@@ -76,6 +77,7 @@ const ColorGradient = React.createClass({
                     height={height}
                     ref="canvas"
                     onMouseDown={component.onMouseDown}
+                    onMouseUp={component.props.onMouseUp}
                 />
             </div>
         )
