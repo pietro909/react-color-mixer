@@ -27,7 +27,7 @@ const ColorGradient = React.createClass({
         var y = e.nativeEvent.offsetY;
         var pixelData = ctx.getImageData(x, y, 1, 1);
         if (typeof this.props.onPixelSelected === 'function') {
-            this.props.onPixelSelected(pixelData);
+            this.props.onPixelSelected(e, pixelData);
         }
         console.log(`${x}, ${y}`);
     },

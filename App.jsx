@@ -41,7 +41,7 @@ const App = React.createClass({
         });
     },
 
-    onGradientSelected: function(pixelData) {
+    onGradientSelected: function(event, pixelData) {
         console.log(pixelData);
         this.setState(function(previousState, currentProps) {
             previousState.currentSelection.color =  Color({
@@ -51,6 +51,9 @@ const App = React.createClass({
                 a: pixelData.data[3]
             })
         });
+        // manage ufo
+        this.refs.ufo.left = event.nativeEvent.pageX;
+        this.refs.ufo.top = event.nativeEvent.pageY;
     },
 
     render: function() {
@@ -90,7 +93,6 @@ const App = React.createClass({
                 </header>
                 <section>
                     {debug}
-                    {currentSelection}
                 </section>
                 <section>
                     {selectors}
@@ -106,6 +108,9 @@ const App = React.createClass({
                 <section className="tints-and-shades">
                     {tintsAndShades}
                 </section>
+                <div ref="ufo" className="ufo">
+                    {currentSelection}
+                </div>
             </article>
         );
     }
