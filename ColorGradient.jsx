@@ -9,17 +9,17 @@ const ColorGradient = React.createClass({
         end: PropTypes.string.isRequired,
         direction: PropTypes.string,
         title: PropTypes.string,
-        onPixelSelected: PropTypes.func,
+        onMouseDown: PropTypes.func,
         onMouseUp: PropTypes.func
     },
 
-    drawGradient: function() {
+    drawGradient: function(width, height) {
         var ctx = this.context;
-        var gradient = ctx.createLinearGradient(0,100,200,100);
+        var gradient = ctx.createLinearGradient(0,height/2,width,height/2);
         gradient.addColorStop(0, this.props.start);
         gradient.addColorStop(1, this.props.end);
         ctx.fillStyle = gradient;
-        ctx.fillRect(10,10,200,100);
+        ctx.fillRect(0,0,width, height);
     },
 
     onMouseDown: function(e) {
@@ -27,57 +27,52 @@ const ColorGradient = React.createClass({
         var x = e.nativeEvent.offsetX;
         var y = e.nativeEvent.offsetY;
         var pixelData = ctx.getImageData(x, y, 1, 1);
-        if (typeof this.props.onPixelSelected === 'function') {
-            this.props.onPixelSelected(e, pixelData);
+        if (typeof this.props.onMouseDown === 'function') {
+            this.props.onMouseDown(e, pixelData);
         }
         console.log(`${x}, ${y}`);
     },
 
-    componentDidMount: function() {
+    onMouseUp: function(e) {
+        console.log('UP');
+        if (typeof this.props.onMouseUp === 'function') {
+            this.props.onMouseUp(e);
+        }
+    },
+
+    updateCanvas: function() {
         var canvas = this.refs.canvas;
+        var height = canvas.clientHeight;
+        var width = canvas.clientWidth;
+        canvas.setAttribute('width', width);
+        canvas.setAttribute('height', height);
         this.context = canvas.getContext('2d');
-        this.drawGradient();
+        return {
+            width: width,
+            height: height
+        };
+    },
+
+    componentDidMount: function() {
+        var sizes = this.updateCanvas();
+        this.drawGradient(sizes.width, sizes.height);
     },
 
     componentDidUpdate: function() {
-        var canvas = this.refs.canvas;
-        this.context = canvas.getContext('2d');
-        this.drawGradient();
+        var sizes = this.updateCanvas();
+        this.drawGradient(sizes.width, sizes.height);
     },
 
     render: function() {
-        // var direction = 'to left';
-        var height = 200, width = 200;
-        // switch (this.props.direction) {
-        //     case 'top':
-        //         direction = 'to top';
-        //         style.height = '16rem';
-        //         break;
-        //     case 'bottom':
-        //         direction = 'to bottom';
-        //         style.height = '16rem';
-        //         break;
-        //     case 'right':
-        //         direction = 'to right';
-        //         style.height = '4rem';
-        //         break;
-        //     default:
-        //         style.height = '4rem';
-        // }
-
-        // todo: put a DIV as elastic container, then measure it and append a CANVAS with right size
-
         var title = this.props.title ? <h3>{this.props.title}</h3> : '';
         var component = this;
         return (
             <div className="color-gradient">
                 {title}
                 <canvas
-                    width={width}
-                    height={height}
                     ref="canvas"
                     onMouseDown={component.onMouseDown}
-                    onMouseUp={component.props.onMouseUp}
+                    onMouseUp={component.onMouseUp}
                 />
             </div>
         )

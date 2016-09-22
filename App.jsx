@@ -41,7 +41,7 @@ const App = React.createClass({
         });
     },
 
-    onGradientSelected: function(event, pixelData) {
+    onGradientMouseDown: function(event, pixelData) {
         this.setState(function(previousState, currentProps) {
             previousState.currentSelection.color =  Color({
                 r: pixelData.data[0],
@@ -55,7 +55,7 @@ const App = React.createClass({
         this.refs.ufo.style.display = 'flex';
     },
 
-    onGradientUnselected: function(event) {
+    onGradientMouseUp: function(event) {
         this.refs.ufo.style.display = 'none';
     },
 
@@ -75,20 +75,40 @@ const App = React.createClass({
         });
         var tintsAndShades = this.state.colors.map(function(element) {
             return <div key={element.name} className="color-variations">
-                <ColorGradient start={element.color} end="#ffffff" direction="top" title="Tints"/>
-                <ColorGradient start={element.color} end="#000000" direction="top" title="Shades"/>
+                <ColorGradient
+                    start={element.color}
+                    end="#ffffff"
+                    onMouseDown={component.onGradientMouseDown}
+                    onMouseUp={component.onGradientMouseUp}
+                    title="Tints"/>
+                <ColorGradient
+                    start={element.color}
+                    end="#000000"
+                    onMouseDown={component.onGradientMouseDown}
+                    onMouseUp={component.onGradientMouseUp}
+                    title="Shades"/>
             </div>;
         });
         var gradient = {
             start: this.state.colors[0].color,
             end: this.state.colors[1].color
         };
-        var currentSelection;
+        var currentSelection, currentHexColor;
         if (this.state.currentSelection.color !== null) {
-            currentSelection = <span style={{width: '30px', height: '30px', backgroundColor: this.state.currentSelection.color.hexString()}}/>
+            currentHexColor = this.state.currentSelection.color.hexString();
+            currentSelection =
+                <div>
+                    <p>{this.state.currentSelection.color.hexString()}</p>
+                    <div>
+                        <span style={{width: '30px', height: '30px', backgroundColor: currentHexColor}}/>
+                        <button onClick={this.onColor.bind(this,'A',currentHexColor)}>Set to A</button>
+                        <button onClick={this.onColor.bind(this,'B',currentHexColor)}>Set to B</button>
+                    </div>
+                </div>
         } else {
             currentSelection = '';
         }
+
         return (
             <article>
                 <header>
@@ -104,16 +124,15 @@ const App = React.createClass({
                     <ColorGradient
                         start={gradient.start}
                         end={gradient.end}
-                        direction="right"
-                        onPixelSelected={component.onGradientSelected}
-                        onMouseUp={component.onGradientUnselected}
+                        onMouseDown={component.onGradientMouseDown}
+                        onMouseUp={component.onGradientMouseUp}
                     />
                 </section>
                 <section className="tints-and-shades">
                     {tintsAndShades}
                 </section>
                 <div ref="ufo" className="ufo">
-                    {currentSelection}
+                    { currentSelection }
                 </div>
             </article>
         );
