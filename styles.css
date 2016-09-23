@@ -52,6 +52,10 @@ p.help {
     padding: initial;
     margin: 1rem;
     font-weight: normal;
+    font-style: italic;
+}
+input.complementary {
+    cursor: not-allowed;
 }
 .tints-and-shades {
     display: flex;
@@ -67,14 +71,10 @@ p.help {
 .tints-and-shades .labels h3 {
     flex: 1 1 50%;
 }
-.color-gradient, .color-variations {
-    /*margin: 0.8rem;*/
-}
 .color-variations {
     display: flex;
     flex-direction: row;
     flex: 1 1 50%;
-    /*width: 200px;*/
 }
 .color-gradient {
     display: flex;
@@ -83,11 +83,6 @@ p.help {
     width: 50%;
     margin: 0.2rem;
 }
-/*
-.color-gradient div {
-    height: 16em;
-}
-*/
 .color-picker, .complementaries > div {
     display: flex;
     flex: 1 1 50%;
@@ -116,4 +111,18 @@ p.help {
 .selectors, .complementaries {
     display: flex;
     flex-direction: row;
+}
+.selectors {
+    margin-bottom: 0.6rem;
+}
+
+@media screen and (max-width: 1080px) and (min-width: 720px) {
+    body {
+        margin: 0 80px;
+    }
+}
+@media screen and (min-width: 1080px) {
+    body {
+        margin: 0 240px;
+    }
 }
