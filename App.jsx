@@ -7,8 +7,8 @@ import * as Utils from './Utils.jsx';
 const App = React.createClass({
 
     getInitialState: function() {
-        var colorA = Color('#FF0000');
-        var colorB = Color('#00FF00');
+        const colorA = Color('#ff8000');
+        const colorB = Color('#804040');
 
         return {
             colors: [
@@ -31,7 +31,7 @@ const App = React.createClass({
 
     onColor: function(name, color) {
         this.setState(function(previousState, currentProps) {
-            var element = previousState.colors.find(function (obj) {
+            const element = previousState.colors.find(function (obj) {
                 return obj.name === name;
             });
             if (element) {
@@ -70,9 +70,10 @@ const App = React.createClass({
         const complementaries = this.state.colors.map(element => {
             const style = { backgroundColor: element.complementary.hexString() };
             return <div key={element.name}>
-                <span className="complementary"/>
+                <label>Complementary:</label>
+                <input type="color" disabled value={element.complementary.hexString()} className="complementary"/>
                 <p style={{ color: element.complementary.hexString() }}>
-                    {element.color}
+                    {element.complementary.hexString()}
                 </p>
             </div>;
         });
@@ -80,6 +81,7 @@ const App = React.createClass({
             <ColorPicker
                 key={element.name}
                 name={element.name}
+                label={`Color ${element.name}`}
                 color={element.color}
                 onColor={component.onColor}
             />
@@ -110,8 +112,8 @@ const App = React.createClass({
 
         return (
             <article>
+                <h1>Color mixer</h1>
                 <header>
-                    <h1>Color mixer</h1>
                     <div className="selectors">
                         {selectors}
                     </div>
@@ -119,6 +121,9 @@ const App = React.createClass({
                         {complementaries}
                     </div>
                 </header>
+                <p className="help">
+                    Hint: you can click on the gradients to pick up any color.
+                </p>
                 <section>
                     <ColorGradient
                         start={gradient.start}
@@ -128,9 +133,9 @@ const App = React.createClass({
                     />
                 </section>
                 <section className="tints-and-shades">
-                    <div>
+                    <div className="labels">
                         <h3>Tints</h3>
-                        <h3>Shades</h3>>
+                        <h3>Shades</h3>
                     </div>
                     {tintsAndShades}
                 </section>
