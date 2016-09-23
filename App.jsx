@@ -2,6 +2,7 @@ import React from 'react';
 import ColorPicker from './ColorPicker.jsx';
 import ColorGradient from './ColorGradient.jsx';
 import Color from 'color';
+import * as Utils from './Utils.jsx';
 
 const App = React.createClass({
 
@@ -14,12 +15,12 @@ const App = React.createClass({
                 {
                     name: 'A',
                     color: colorA.hexString(),
-                    complementary: colorA.rotate(180).hexString()
+                    complementary: colorA.rotate(180)
                 },
                 {
                     name: "B",
                     color: colorB.hexString(),
-                    complementary: colorB.rotate(180).hexString()
+                    complementary: colorB.rotate(180)
                 }
             ],
             currentSelection: {
@@ -35,7 +36,7 @@ const App = React.createClass({
             });
             if (element) {
                 element.color = color;
-                element.complementary = Color(color).rotate(180).hexString();
+                element.complementary = Color(color).rotate(180);
             }
             return previousState;
         });
@@ -55,71 +56,69 @@ const App = React.createClass({
         this.refs.ufo.style.display = 'flex';
     },
 
-    onGradientMouseUp: function(event) {
+    onGradientMouseUp: function() {
+        this.hideFloatingSelector();
+    },
+
+    hideFloatingSelector: function () {
         this.refs.ufo.style.display = 'none';
     },
 
     render: function() {
-        var component = this;
-        var debug = this.state.colors.map(function(element) {
-            var s = { color: element.complementary };
-            return <p style={s} key={element.name}>{element.name}: {element.color}</p>
+        const component = this;
+        const selectorBuilder = Utils.makeFloatingSelector(this);
+        const complementaries = this.state.colors.map(element => {
+            const style = { backgroundColor: element.complementary.hexString() };
+            return <div key={element.name}>
+                <span className="complementary"/>
+                <p style={{ color: element.complementary.hexString() }}>
+                    {element.color}
+                </p>
+            </div>;
         });
-        var selectors = this.state.colors.map(function(element) {
-            return <ColorPicker
+        const selectors = this.state.colors.map(element =>
+            <ColorPicker
                 key={element.name}
                 name={element.name}
                 color={element.color}
                 onColor={component.onColor}
-            />;
-        });
-        var tintsAndShades = this.state.colors.map(function(element) {
-            return <div key={element.name} className="color-variations">
+            />
+        );
+        const tintsAndShades = this.state.colors.map(element =>
+            <div key={element.name} className="color-variations">
                 <ColorGradient
                     start={element.color}
                     end="#ffffff"
                     onMouseDown={component.onGradientMouseDown}
                     onMouseUp={component.onGradientMouseUp}
-                    title="Tints"/>
+                />
                 <ColorGradient
                     start={element.color}
                     end="#000000"
                     onMouseDown={component.onGradientMouseDown}
                     onMouseUp={component.onGradientMouseUp}
-                    title="Shades"/>
-            </div>;
-        });
-        var gradient = {
+                />
+            </div>
+        );
+        const gradient = {
             start: this.state.colors[0].color,
             end: this.state.colors[1].color
         };
-        var currentSelection, currentHexColor;
-        if (this.state.currentSelection.color !== null) {
-            currentHexColor = this.state.currentSelection.color.hexString();
-            currentSelection =
-                <div>
-                    <p>{this.state.currentSelection.color.hexString()}</p>
-                    <div>
-                        <span style={{width: '30px', height: '30px', backgroundColor: currentHexColor}}/>
-                        <button onClick={this.onColor.bind(this,'A',currentHexColor)}>Set to A</button>
-                        <button onClick={this.onColor.bind(this,'B',currentHexColor)}>Set to B</button>
-                    </div>
-                </div>
-        } else {
-            currentSelection = '';
-        }
+        const currentSelection = (this.state.currentSelection.color !== null)
+            ? selectorBuilder(this.state.currentSelection.color, this.onColor, this.hideFloatingSelector)
+            : '';
 
         return (
             <article>
                 <header>
                     <h1>Color mixer</h1>
+                    <div className="selectors">
+                        {selectors}
+                    </div>
+                    <div className="complementaries">
+                        {complementaries}
+                    </div>
                 </header>
-                <section>
-                    {debug}
-                </section>
-                <section>
-                    {selectors}
-                </section>
                 <section>
                     <ColorGradient
                         start={gradient.start}
@@ -129,6 +128,10 @@ const App = React.createClass({
                     />
                 </section>
                 <section className="tints-and-shades">
+                    <div>
+                        <h3>Tints</h3>
+                        <h3>Shades</h3>>
+                    </div>
                     {tintsAndShades}
                 </section>
                 <div ref="ufo" className="ufo">
